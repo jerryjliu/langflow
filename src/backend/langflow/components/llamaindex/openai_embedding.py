@@ -1,12 +1,11 @@
 """OpenAI Embedding."""
 
-from typing import Optional, List, cast
+from typing import List, cast
 from langflow import CustomComponent
-from langflow.utils.util import build_loader_repr_from_documents
 from langflow.field_typing import Object
-from llama_index.schema import Document, TextNode, MetadataMode
-from llama_index.node_parser import SentenceSplitter
+from llama_index.schema import TextNode, MetadataMode
 from llama_index.embeddings import OpenAIEmbedding
+
 
 class OpenAIEmbeddingComponent(CustomComponent):
     display_name: str = "OpenAI Embeddings"
@@ -22,7 +21,7 @@ class OpenAIEmbeddingComponent(CustomComponent):
             "documents": {
                 "display_name": "Documents",
                 "info": "The documents to embed.",
-            }
+            },
         }
 
     def build(

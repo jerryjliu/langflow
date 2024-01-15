@@ -1,11 +1,11 @@
 """Sentence splitter."""
 
-from typing import Optional, List, cast
+from typing import List, cast
 from langflow import CustomComponent
-from langflow.utils.util import build_loader_repr_from_documents
 from langflow.field_typing import Object
-from llama_index.schema import Document, TextNode
+from llama_index.schema import TextNode
 from llama_index.node_parser import SentenceSplitter
+
 
 class SentenceSplitterComponent(CustomComponent):
     display_name: str = "Sentence Splitter"
@@ -31,18 +31,18 @@ class SentenceSplitterComponent(CustomComponent):
             },
             "separator": {
                 "display_name": "Separator",
-                "info": 'Default separator for splitting into words',
+                "info": "Default separator for splitting into words",
                 "value": " ",
             },
             "paragraph_separator": {
                 "display_name": "Paragraph Separator",
-                "info": 'Default separator for splitting into paragraphs',
+                "info": "Default separator for splitting into paragraphs",
                 "value": "\n\n\n",
             },
             "secondary_chunking_regex": {
                 "display_name": "Secondary Chunking Regex",
-                "info": 'Backup regex for splitting into sentences',
-                "value": "[^,.;。？！]+[,.;。？！]?"
+                "info": "Backup regex for splitting into sentences",
+                "value": "[^,.;。？！]+[,.;。？！]?",
             },
         }
 
@@ -79,6 +79,6 @@ class SentenceSplitterComponent(CustomComponent):
             paragraph_separator=paragraph_separator,
             secondary_chunking_regex=secondary_chunking_regex,
         )
-        
+
         nodes = node_parser.get_nodes_from_documents(documents)
         return nodes

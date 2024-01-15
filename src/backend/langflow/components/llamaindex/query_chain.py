@@ -1,6 +1,6 @@
 """Query Chain."""
 
-from typing import Callable, Union
+from typing import Any, Callable, Union
 
 from langflow import CustomComponent
 from langflow.field_typing import BasePromptTemplate, Chain, Object
@@ -29,11 +29,14 @@ class QueryChainComponent(CustomComponent):
     ) -> Union[Chain, Callable]:
         """Build."""
 
-        def query_chain_fn(*args, **kwargs) -> str:
-            fmt_prompt = prompt.format(**kwargs)
-            return str(query_engine.query(fmt_prompt))
+        class QueryChain:
+            def __call__(self, *args: Any, **kwargs: Any) -> Any:
+                fmt_prompt = prompt.format(**kwargs)
+                return str(query_engine.query(fmt_prompt))
 
-        query_chain_fn.input_keys = prompt.input_variables
-        query_chain_fn.prompt = prompt
+        query_chain = QueryChain()
 
-        return query_chain_fn
+        query_chain.input_keys = prompt.input_variables
+        query_chain.prompt = prompt
+
+        return query_chain

@@ -1,5 +1,4 @@
 from langflow import CustomComponent
-from langflow.utils.constants import LOADERS_INFO
 from langflow.field_typing import Object
 
 from llama_index.readers import SimpleDirectoryReader
@@ -53,7 +52,7 @@ class SimpleDirectoryReaderComponent(CustomComponent):
                     ".md",
                     ".mbox",
                     ".ipynb",
-                    ".txt"
+                    ".txt",
                 ],
             },
             "code": {"show": False},
@@ -61,7 +60,7 @@ class SimpleDirectoryReaderComponent(CustomComponent):
 
     def build(self, file_path: str) -> Object:
         """Build."""
-        
+
         reader = SimpleDirectoryReader(input_files=[file_path])
         documents = reader.load_data()
 
