@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "langflow"
-version = "0.6.4"
+version = "0.6.5a3"
 description = "A Python package with a built-in web application"
 authors = ["Logspace <contact@logspace.ai>"]
 maintainers = [
@@ -104,6 +104,7 @@ qianfan = "0.2.0"
 pgvector = "^0.2.3"
 pyautogen = "^0.2.0"
 langchain-google-genai = "^0.0.2"
+elasticsearch = "^8.11.1"
 pytube = "^15.0.0"
 llama-index = "^0.9.24"
 
