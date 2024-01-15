@@ -1,9 +1,10 @@
 """Query Chain."""
 
-from typing import Any, Callable, Union
+from typing import Any, Callable, Union, List, Dict, Optional
 
 from langflow import CustomComponent
 from langflow.field_typing import BasePromptTemplate, Chain, Object
+from llama_index.query_engine import BaseQueryEngine
 
 
 class QueryChainComponent(CustomComponent):
@@ -29,14 +30,49 @@ class QueryChainComponent(CustomComponent):
     ) -> Union[Chain, Callable]:
         """Build."""
 
-        class QueryChain:
-            def __call__(self, *args: Any, **kwargs: Any) -> Any:
-                fmt_prompt = prompt.format(**kwargs)
-                return str(query_engine.query(fmt_prompt))
+        class QueryChain(Chain):
+            """Query chain as a subclass of langchain chain.
 
-        query_chain = QueryChain()
+            TODO: this is mostly to get the current runnable to work.
+            
+            """
 
-        query_chain.input_keys = prompt.input_variables
-        query_chain.prompt = prompt
+            query_engine: BaseQueryEngine
+            prompt: BasePromptTemplate
+            
+            # def __init__(
+            #     self, 
+            #     query_engine: BaseQueryEngine,
+            #     prompt: BasePromptTemplate,
+            # ) -> None:
+            #     self.query_engine = query_engine
+            #     self.prompt = prompt
+
+            @property
+            def input_keys(self) -> List[str]:
+                return self.prompt.input_variables
+
+            @property
+            def output_keys(self) -> List[str]:
+                return ["output"]
+
+            def _call(
+                self,
+                inputs: Dict[str, Any],
+                run_manager: Optional[Any] = None,
+            ) -> Dict[str, Any]:
+                """Execute the chain."""
+                return {
+                    "output": self.query_engine.query(self.prompt.format(**inputs))
+                }
+
+        # class QueryChain:
+        #     def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        #         fmt_prompt = prompt.format(**kwargs)
+        #         return str(query_engine.query(fmt_prompt))
+        query_chain = QueryChain(query_engine=query_engine, prompt=prompt)
+
+        # query_chain.input_keys = prompt.input_variables
+        # query_chain.prompt = prompt
 
         return query_chain
