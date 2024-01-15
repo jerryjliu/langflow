@@ -62,8 +62,9 @@ class QueryChainComponent(CustomComponent):
                 run_manager: Optional[Any] = None,
             ) -> Dict[str, Any]:
                 """Execute the chain."""
+                response = self.query_engine.query(self.prompt.format(**inputs))
                 return {
-                    "output": self.query_engine.query(self.prompt.format(**inputs))
+                    "output": str(response)
                 }
 
         # class QueryChain:

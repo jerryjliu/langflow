@@ -39,7 +39,7 @@ class RetrieverQueryEngineComponent(CustomComponent):
         """Build."""
         retriever = cast(VectorIndexRetriever, retriever)
         llm_wrapper = LangChainLLM(llm=llm)
-        service_context = ServiceContext.from_defaults(llm_wrapper)
+        service_context = ServiceContext.from_defaults(llm=llm_wrapper)
         # return Callable
         query_engine = RetrieverQueryEngine.from_args(
             retriever,
